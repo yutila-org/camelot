@@ -14,7 +14,7 @@ MERLIN_BIN := bin/merlin
 
 .PHONY: default
 default: $(MERLIN_BIN)
-	@./$(MERLIN_BIN) $(if $(RELEASE),RELEASE=1,)
+	@./$(MERLIN_BIN) all $(if $(RELEASE),RELEASE=1,)
 
 $(MERLIN_BIN): merlin.d
 	@mkdir -p bin

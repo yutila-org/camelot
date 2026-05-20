@@ -325,7 +325,11 @@ void main(string[] args) {
         writef("\n\033[1;38;5;198m🔮 Merlin\033[0m > ");
         stdout.flush();
 
-        string input = readln().strip().toLower();
+        string line = readln();
+        if (line is null) {
+            break;
+        }
+        string input = line.strip().toLower();
         if (input == "exit" || input == "quit" || input == "5" || input == "q") {
             writefln("\n\033[1;38;5;198m( ๑◡⩊◡๑ )\033[0m \033[33m< \"Farewell, young wizard! May your spells stay sharp.\"\033[0m\n");
             break;
