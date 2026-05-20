@@ -11,6 +11,7 @@
   <a href="https://img.shields.io/badge/Orchestrator-Merlin%20(D)-magenta?style=for-the-badge&logo=d&logoColor=white"><img src="https://img.shields.io/badge/Orchestrator-Merlin%20(D)-F24E1E?style=for-the-badge&logo=d&logoColor=white" alt="D"></a>
   <a href="https://img.shields.io/badge/Security-Hardened-red?style=for-the-badge&logo=securityscorecard&logoColor=white"><img src="https://img.shields.io/badge/Security-Hardened-red?style=for-the-badge&logo=securityscorecard&logoColor=white" alt="Hardened"></a>
   <a href="https://img.shields.io/badge/License-MPL_2.0-orange?style=for-the-badge"><img src="https://img.shields.io/badge/License-MPL_2.0-orange?style=for-the-badge" alt="MPL 2.0"></a>
+  <a href="https://www.bestpractices.dev/projects/12919"><img src="https://www.bestpractices.dev/projects/12919/badge" alt="OpenSSF Best Practices"></a>
 </p>
 
 ---

@@ -3,6 +3,7 @@ name: Camelot CI/CD
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ "main" ]
 
@@ -11,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install D Compiler
+        uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: dmd-latest
       - name: Compile Code
         run: make
       - name: Run Tests
@@ -40,6 +45,7 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
   sbom:
     runs-on: ubuntu-latest
@@ -74,4 +80,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate dependencies using deps.dev / OSV
-        uses: google/osv-scanner-action/osv-scanner@v1
+        uses: google/osv-scanner-action/osv-scanner@v1.8.2
+
+  deploy:
+    name: Deploy Release Asset
+    needs: [build, secret-scan]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install D Compiler
+        uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: dmd-latest
+
+      - name: Build Release Binary
+        run: |
+          make all RELEASE=1
+
+      - name: Package Release Assets
+        run: |
+          tar -czvf camelot-linux-amd64.tar.gz bin/camelot include/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: camelot-linux-amd64.tar.gz
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
