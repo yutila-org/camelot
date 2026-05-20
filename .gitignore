@@ -1,0 +1,61 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (dynamic libraries)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+bin/
+obj/
+build/
+camelot
+test_camelot
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# Text Editor / IDE Caches
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.clangd/
+.cache/
