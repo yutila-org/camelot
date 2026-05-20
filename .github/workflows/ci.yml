@@ -80,7 +80,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate dependencies using deps.dev / OSV
-        uses: google/osv-scanner-action/osv-scanner@v1.8.2
+        uses: google/osv-scanner-action@v1.8.2
 
   deploy:
     name: Deploy Release Asset
