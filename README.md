@@ -1,40 +1,65 @@
-<div align="center">
+<p align="center">
+  <img src="logo.svg" alt="Camelot Logo" width="280">
+</p>
 
-  <img src="logo.svg" alt="Camelot Logo" width="200" />
+<p align="center">
+  <code><b>( •⩊• )</b> "Did someone say... MAGIC?!"</code>
+</p>
 
-  <br />
+<p align="center">
+  <a href="https://img.shields.io/badge/Language-C23-38;5;81?style=for-the-badge&logo=c&logoColor=white"><img src="https://img.shields.io/badge/Language-C23-00599C?style=for-the-badge&logo=c&logoColor=white" alt="C23"></a>
+  <a href="https://img.shields.io/badge/Orchestrator-Merlin%20(D)-magenta?style=for-the-badge&logo=d&logoColor=white"><img src="https://img.shields.io/badge/Orchestrator-Merlin%20(D)-F24E1E?style=for-the-badge&logo=d&logoColor=white" alt="D"></a>
+  <a href="https://img.shields.io/badge/Security-Hardened-red?style=for-the-badge&logo=securityscorecard&logoColor=white"><img src="https://img.shields.io/badge/Security-Hardened-red?style=for-the-badge&logo=securityscorecard&logoColor=white" alt="Hardened"></a>
+  <a href="https://img.shields.io/badge/License-MPL_2.0-orange?style=for-the-badge"><img src="https://img.shields.io/badge/License-MPL_2.0-orange?style=for-the-badge" alt="MPL 2.0"></a>
+  <a href="https://www.bestpractices.dev/projects/12919"><img src="https://www.bestpractices.dev/projects/12919/badge" alt="OpenSSF Best Practices"></a>
+</p>
 
-  <h1>Camelot</h1>
-   
-  **A C Standard Library Framework**
+---
 
-  <br />
-  <br />
+**Camelot** is a lightweight, zero-latency C framework engineered for strict memory safety, predictability, and secure execution. It compiles under **C23** and is fully driven by **Merlin**, a compiled, standalone build orchestrator written in the **D Programming Language** that features interactive TUI animations.
 
-  <img src="https://img.shields.io/badge/License-MPL_2.0-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="License" />
-  <img src="https://img.shields.io/badge/Standard-C23-purple?style=for-the-badge&logo=c&logoColor=white" alt="Standard" />
+---
 
-</div>
+## 🔮 Merlin Build Dashboard
 
-<br />
+Simply invoke `make` (which bootstraps `merlin.d` to `bin/merlin`) to launch the interactive, animated build dashboard:
 
-## <img src="https://cdn.simpleicons.org/blueprint/ffffff" width="24" style="vertical-align: bottom;" /> Overview
+```bash
+make
+```
 
-C remains the foundational language for systems engineering due to its minimal runtime, predictable performance, and strict ABI stability. However, the legacy `libc` ecosystem lacks modern safety paradigms, often forcing developers to adopt C++ to manage complexity at scale.
+### Build Command Recipes
 
-**Camelot** is a standard library replacement built to bridge this gap. It implements the structural guarantees typically sought in higher-level languages—such as RAII, explicit error handling, and safe memory lifetimes—natively within C23. Our goal is to make C a rigorous, viable choice for modern large-scale projects.
+| Command | Action / Verification |
+| :--- | :--- |
+| `make` | Summons the animated TUI dashboard and scans directory stats |
+| `make all` | Compiles the framework target using the secure compilation standard |
+| `make test` | Runs the test suite under strict **Address, Undefined, and Leak Sanitizers** |
+| `make run` | Builds and launches the C framework executable |
+| `make clean` | Poof! Prunes all compiled caches, object files, and binaries |
 
-## <img src="https://cdn.simpleicons.org/polywork/ffffff" width="24" style="vertical-align: bottom;" /> Architecture
+---
 
-The framework functions via four distinct components designed for deterministic execution:
+## 🏗️ Repository Architecture
 
-| Component | Stack | Responsibility |
-| :--- | :--- | :--- |
-| **Memory Engine** | <img src="https://img.shields.io/badge/Arena_Allocator-96bf48?style=flat&logo=c&logoColor=white&labelColor=96bf48" height="20" /> | O(1) linear allocation (Workspaces) with automated `__attribute__((cleanup))` RAII. |
-| **Data Layout** | <img src="https://img.shields.io/badge/Zero--Copy_Views-e5a50a?style=flat&logo=buffer&logoColor=white&labelColor=e5a50a" height="20" /> | Immutable string views and slices to prevent redundant memory copying and bounds violations. |
-| **Safety Protocol** | <img src="https://img.shields.io/badge/Result_Types-dea584?style=flat&logo=rust&logoColor=white&labelColor=dea584" height="20" /> | Deterministic error handling via explicit `Result` return types; silent failures are prohibited. |
-| **Build System** | <img src="https://img.shields.io/badge/Make_Dist-0082fc?style=flat&logo=gnu&logoColor=white&labelColor=0082fc" height="20" /> | Source-level artifact generation and structural isolation. |
+```text
+camelot/
+├── include/camelot/      # Unified framework API
+│   ├── core/             # Tri-state Result monad & safety poisoning guards
+│   ├── memory/           # Monotonic Arena & Allocator dispatch interfaces
+│   └── types/            # Fixed-width primitive specifications
+├── src/                  # Implementation Source Code
+├── tests/                # Verification Suite
+├── merlin.d              # Standalone Merlin build orchestrator in D
+└── Makefile              # Transparent bootstrap Makefile wrapper
+```
 
-## <img src="https://cdn.simpleicons.org/github/ffffff" width="24" style="vertical-align: bottom;" /> Integration
+---
 
-Camelot is distributed via versioned source releases. To integrate the framework, download the latest stable version from the [releases](https://github.com/tarantula-org/camelot/releases) section, compile the static library via `make`, and install it onto your system to link against your projects.
+## 🛡️ Security Policy Guarantees
+
+All compiles automatically inherit the following enterprise-grade exploit mitigations:
+- **ASLR Compatibility:** Complies via `-fPIE` / `-pie` (Position Independent Executable).
+- **Stack Protection:** Hardened via `-fstack-protector-strong` stack canaries.
+- **Memory Sandboxing:** Traps runtime errors, memory leaks, and bounds overflow via `-fsanitize=address,undefined,leak`.
+- **Undefined Behavior Mitigation:** Relies on defined two's-complement integer wrapping (`-fwrapv`), traps integer overflows (`-ftrapv`), and disables unsafe standard functions (`strcpy`, `strcat`) via static compile-time poisoning.

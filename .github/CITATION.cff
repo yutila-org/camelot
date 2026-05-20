@@ -1,9 +1,0 @@
-cff-version: 1.2.0
-message: "If you use Camelot in your research or systems, please cite the repository directly."
-authors:
-  - alias: "Acrilic"
-    affiliation: "Tarantula Tech"
-title: "Camelot: The Senior Engineer's C Framework"
-url: "https://github.com/tarantula-org/camelot"
-license: MPL-2.0
-type: software

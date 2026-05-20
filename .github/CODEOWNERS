@@ -1,9 +1,0 @@
-/SECURITY.md             @tarantula-org/security
-/CONTRIBUTING.md         @tarantula-org/architecture
-/.github/                @tarantula-org/architecture
-*.c                      @tarantula-org/engineering
-*.h                      @tarantula-org/engineering
-Makefile                 @tarantula-org/engineering
-assets/                  @tarantula-org/engineering
-docs/                    @tarantula-org/engineering
-.github/workflows/       @tarantula-org/security @tarantula-org/architecture

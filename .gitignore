@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+!merlin.d
 
 # Object files
 *.o
@@ -22,19 +23,18 @@
 *.la
 *.lo
 
-# Shared objects (inc. Windows DLLs)
+# Shared objects (dynamic libraries)
 *.dll
 *.so
 *.so.*
 *.dylib
 
 # Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+bin/
+obj/
+build/
+/camelot
+/test_camelot
 
 # Debug files
 *.dSYM/
@@ -42,17 +42,21 @@
 *.idb
 *.pdb
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
 
-# debug information files
-*.dwo
-.vscode/*
-packages/*
-build/*
+# Text Editor / IDE Caches
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.clangd/
+.cache/
