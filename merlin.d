@@ -82,8 +82,19 @@ void buildTarget(bool release, bool testTarget) {
     mkdirRecurse(objDir);
     mkdirRecurse("bin");
 
+    // Detect C23 standard support flag (fallback to C2x on older compilers)
+    string stdFlag = "-std=c23";
+    try {
+        auto res = executeShell("gcc -std=c23 -E - < /dev/null");
+        if (res.status != 0) {
+            stdFlag = "-std=c2x";
+        }
+    } catch (Exception e) {
+        stdFlag = "-std=c2x";
+    }
+
     // GCC build orchestration with full Yutila Security mitigation compliance
-    string[] cflags = ["-Wall", "-Wextra", "-Wpedantic", "-Werror", "-std=c23", "-Iinclude", "-fPIE", "-fstack-protector-strong"];
+    string[] cflags = ["-Wall", "-Wextra", "-Wpedantic", "-Werror", stdFlag, "-Iinclude", "-fPIE", "-fstack-protector-strong"];
     string[] ldflags = ["-pie", "-Wl,-z,noexecstack"];
 
     if (release) {
