@@ -20,86 +20,7 @@ To guarantee absolute portability across arbitrary C compilers and environments,
 2.  **Secondary Requirement:** Compiler attributes that operate strictly during compilation without mutating runtime binaries, such as static analysis hints (e.g., `__attribute__((warn_unused_result))`), are acceptable and encouraged.
 3.  **Prohibitions & Restrictions:** Runtime-altering extensions, specifically GCC's `__attribute__((cleanup))` for RAII emulation, are forbidden due to lack of support in non-GNU environments.
 
-## 2\. Problems to be Solved
-
-### Problem: Allocator agnosticism
-
-  - **Statement:** Hardcoding `malloc` and `free` throughout a codebase creates rigid data structures. It prevents developers from swapping out memory strategies for testing, restricted environments, or performance optimization without rewriting the structure's internal logic.
-  - **Solutions:** [[1]](#solution-vtable)
-
-### Problem: Arena
-
-  - **Statement:** Tracking and freeing thousands of individual object allocations leads to memory fragmentation, high CPU overhead, and inevitable memory leaks when a single free is forgotten.
-  - **Solutions:** [[1]](#solution-arena)
-
-### Problem: Primitives
-
-  - **Statement:** Primitives are not standardized by default and their sizes vary depending on the architecture and compiler.
-  - **Solutions:** [[1]](#solution-primitives)
-
-### Problem: Slices
-
-  - **Statement:** Standard C arrays decay into raw pointers when passed across function boundaries, dropping length metadata. This forces length arguments and reliance on unsafe assumptions. 
-  - **Solutions:** [[1]](#solution-slice)
-
-### Problem: Strings
-
-  - **Statement:** Null-terminated strings in C require `O(N)` traversal just to determine their length and are the root cause of most buffer overflow vulnerabilities.
-  - **Solutions:** [[1]](#solution-string)
-
-### Problem: Dynamic Array
-
-  - **Statement:** Statically sized C arrays cannot grow. Developers are forced to manually write capacity tracking, reallocation, and memory-moving boilerplate. When arrays do reallocate, standard 2.0x growth multipliers mathematically prevent the allocator from ever recycling the previously freed array memory, aggressively compounding heap space and slowing down logic.
-  - **Solutions:** [[1]](#solution-dynamic-array)
-
-### Problem: Doubly Linked List
-
-  - **Statement:** Standard contiguous collections force memory shifts for internal insertions and invalidate pointers upon resizing. A stable, sequential access collection is required where elements preserve absolute hardware addresses.
-  - **Solutions:** [[1]](#solution-doubly-linked-list)
-
-### Problem: Iterator
-
-  - **Statement:** Client code is overwhelmed by explicit iterator tracking patterns or ad-hoc enhanced `for` loops. Because different structures demand different looping boundaries, developers must hardcode structural knowledge to iterate, tightly coupling algorithms to specific data shapes.
-  - **Solutions:** [[1]](#solution-iterator)
-
-### Problem: Table
-
-  - **Statement:** Standard chaining or basic linear-probing hash maps suffer from severe cache misses, pointer chasing, and primary clustering. C lacks a native associative array, forcing developers to implement ad-hoc maps that degrade cache line efficiency and slow down CPU pipelines under high load.
-  - **Solutions:** [[1]](#solution-table)
-
-### Problem: Result
-
-  - **Statement:** Standard C lacks mechanisms to strictly enforce return value checking, and frequently conflates expected logic branching (e.g., a missing table key) with systemic failures (e.g., out-of-memory). Returning magic values obscures the error origin and forces the caller to manually distinguish between an acceptable empty state and an application-halting crash.
-  - **Solutions:** [[1]](#solution-result)
-
-### Problem: Explicit Deferral
-
-  - **Statement:** Functions with multiple return paths frequently leak memory or leave file handles open because developers forget to duplicate the cleanup code at every exit point.
-  - **Solutions:** [[1]](#solution-explicit-deferral)
-
-### Problem: Explicit Deinit
-
-  - **Statement:** Data structures that own memory or system resources lose track of their cleanup requirements when passed around, forcing the programmer to remember exactly how to tear them down.
-  - **Solutions:** [[1]](#solution-explicit-deinit)
-
-### Problem: Files
-
-  - **Statement:** Direct interaction with POSIX or Windows APIs creates platform-specific memory, file descriptor leaks, and inconsistent error codes throughout the core logic of an application.
-  - **Solutions:** [[1]](#solution-files)
-
-### Problem: Legacy String Functions
-
-  - **Statement:** Legacy C string functions (`strcpy`, `strcat`, `strncpy`, `strncat`) are the root cause of the majority of buffer overflow CVEs. Their continued use in any translation unit introduces exploitable attack surface that no amount of runtime checking can fully mitigate.
-  - **Solutions:** [[1]](#solution-compiler-function-poisoning)
-
-### Problem: Unsafe String Interop
-
-  - **Statement:** When Camelot `String` values cross into libc boundaries (e.g., file paths for `fopen`), developers resort to `strcpy` or `sprintf`, reintroducing overflow risk. Furthermore, raw `asprintf()` and `vasprintf()` bypass the `Allocator` VTable entirely, violating memory lifetime ownership and creating double-free hazards.
-  - **Solutions:** [[1]](#solution-safe-string-interop)
-
------
-
-## 3\. Proposed Solutions
+## 2\. Proposed Solutions
 
 #### Solution: VTable
 
@@ -180,7 +101,7 @@ To guarantee absolute portability across arbitrary C compilers and environments,
 
 -----
 
-## 4\. Implementation Details
+## 3\. Implementation Details
 
 ### Implementation: VTable
 
@@ -485,7 +406,7 @@ void OWNEDSTRING_deinit(OwnedString* str);
 
 -----
 
-## 5\. Testing and Validation
+## 4\. Testing and Validation
 
 ### Test: VTable
 
@@ -665,7 +586,7 @@ Result fail = STRING_format(failing_alloc, "test");
 assert(fail.state == ERR && fail.payload.err_code == ERR_OUT_OF_MEMORY);
 ```
 
-## 6\. Build System (Makefile)
+## 5\. Build System (Makefile)
 
 The following compilation and linker flags are mandatory for all Camelot builds. All flags are GCC/Clang-centric; MSVC equivalents (`/GS`, `/DYNAMICBASE`, `/NXCOMPAT`, `/fsanitize=address`) will be documented when MSVC native builds are formalized.
 
@@ -720,7 +641,7 @@ LDFLAGS_DEBUG  := -fsanitize=address,undefined,signed-overflow
 CFLAGS_RELEASE := -O2 -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow
 ```
 
-## 7\. Codebase Structure
+## 6\. Codebase Structure
 
 Camelot's repository is organized to ensure strict modularity, clear separation between public APIs and private implementations, and simplified build orchestration. This structure follows the "Standard C Library" pattern, optimized for long-term maintenance and cross-platform portability.
 
@@ -755,7 +676,7 @@ camelot/
 3.  **Modular Compilation**: Every module (e.g., `ds/vector.c`) is designed to compile into an independent object file. This enables the linker to prune unused modules in static builds, reducing the final binary footprint for restricted environments.
 4.  **Flat Namespace**: To prevent header collision in large enterprise projects, all Camelot headers must be accessed through the `camelot/` prefix.
 
-## 8\. Next Steps and Review
+## 7\. Next Steps and Review
 
 The implementation phase will commence after the final review and approval of this design document.
 
