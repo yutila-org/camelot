@@ -1,65 +1,78 @@
-<p align="center">
-  <img src="logo.svg" alt="Camelot Logo" width="280">
-</p>
+<div align="center">
 
-<p align="center">
-  <code><b>( •⩊• )</b> "Did someone say... MAGIC?!"</code>
-</p>
+  <img src="logo.svg" alt="Camelot Logo" width="200" />
 
-<p align="center">
-  <a href="https://img.shields.io/badge/Language-C23-38;5;81?style=for-the-badge&logo=c&logoColor=white"><img src="https://img.shields.io/badge/Language-C23-00599C?style=for-the-badge&logo=c&logoColor=white" alt="C23"></a>
-  <a href="https://img.shields.io/badge/Orchestrator-Merlin%20(D)-magenta?style=for-the-badge&logo=d&logoColor=white"><img src="https://img.shields.io/badge/Orchestrator-Merlin%20(D)-F24E1E?style=for-the-badge&logo=d&logoColor=white" alt="D"></a>
-  <a href="https://img.shields.io/badge/Security-Hardened-red?style=for-the-badge&logo=securityscorecard&logoColor=white"><img src="https://img.shields.io/badge/Security-Hardened-red?style=for-the-badge&logo=securityscorecard&logoColor=white" alt="Hardened"></a>
-  <a href="https://img.shields.io/badge/License-MPL_2.0-orange?style=for-the-badge"><img src="https://img.shields.io/badge/License-MPL_2.0-orange?style=for-the-badge" alt="MPL 2.0"></a>
-  <a href="https://www.bestpractices.dev/projects/12919"><img src="https://www.bestpractices.dev/projects/12919/badge" alt="OpenSSF Best Practices"></a>
-</p>
+  <br />
 
----
+  <h1>Camelot</h1>
+   
+  **A Core Systems Component Toolkit**
 
-**Camelot** is a lightweight, zero-latency C framework engineered for strict memory safety, predictability, and secure execution. It compiles under **C23** and is fully driven by **Merlin**, a compiled, standalone build orchestrator written in the **D Programming Language** that features interactive TUI animations.
+  <br />
+  <br />
 
----
+  <img src="https://img.shields.io/badge/License-MPL_2.0-brightgreen?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="License" />
+  <img src="https://img.shields.io/badge/Standard-C23-purple?style=for-the-badge&logo=c&logoColor=white" alt="Standard" />
 
-## 🔮 Merlin Build Dashboard
+</div>
 
-Simply invoke `make` (which bootstraps `merlin.d` to `bin/merlin`) to launch the interactive, animated build dashboard:
+<br />
 
-```bash
-make
-```
+## <img src="https://cdn.simpleicons.org/blueprint/ffffff" width="24" style="vertical-align: bottom;" /> Overview
+Camelot is a core component toolkit for C applications. It provides structural alternatives to libc subsystems that expose implicit allocation behavior or hidden state transitions (e.g., dynamic allocation, I/O streams, null-terminated strings). It intentionally provides no API compatibility with standard libc. It is not freestanding and relies on underlying libc components. Safety relies on explicit conventions, custom allocators and strict compiler flags rather than language features.
 
-### Build Command Recipes
+## <img src="https://cdn.simpleicons.org/target/ffffff" width="24" style="vertical-align: bottom;" /> Core Design Goals
+*   **Explicit Control**: Manual and traceable resource, memory and error management.
+*   **Portability**: No runtime-altering compiler extensions (e.g., no GCC `__attribute__((cleanup))`).
+*   **Predictability**: Strict compiler flags constrain undefined behavior and pragmas block unsafe functions.
 
-| Command | Action / Verification |
-| :--- | :--- |
-| `make` | Summons the animated TUI dashboard and scans directory stats |
-| `make all` | Compiles the framework target using the secure compilation standard |
-| `make test` | Runs the test suite under strict **Address, Undefined, and Leak Sanitizers** |
-| `make run` | Builds and launches the C framework executable |
-| `make clean` | Poof! Prunes all compiled caches, object files, and binaries |
+## <img src="https://cdn.simpleicons.org/sentry/ffffff" width="24" style="vertical-align: bottom;" /> Guarantee Model
+*   **Compiler-Enforced**: Type warnings, unhandled `[[nodiscard]]` returns and poisoned function bans.
+*   **Library-Enforced**: VTable allocator boundaries, tri-state `Result` structures and slice capacity limits.
+*   **Test-Enforced**: Memory leaks, out-of-bounds access (ASan) and undefined behavior validation (UBSan).
+*   **Convention-Only**: Explicit `goto defer;` cleanup paths and manual deallocation function calls.
 
----
+## <img src="https://cdn.simpleicons.org/polywork/ffffff" width="24" style="vertical-align: bottom;" /> Architecture
+Camelot is split into modular domains mapping `include/camelot/` to `src/`.
 
-## 🏗️ Repository Architecture
+| Component | Implementation | Enforced By | Responsibility |
+| :--- | :--- | :--- | :--- |
+| **Core & Safety** | <img src="https://img.shields.io/badge/Result_Types-dea584?style=flat&logo=c&logoColor=white&labelColor=dea584" height="20" /> | Attributes | Explicit `[[nodiscard]]` error handling. |
+| **Memory Model** | <img src="https://img.shields.io/badge/VTable_Allocators-96bf48?style=flat&logo=c&logoColor=white&labelColor=96bf48" height="20" /> | Architecture | VTable-based allocators requiring manual teardown. |
+| **Data Layout** | <img src="https://img.shields.io/badge/Fat_Pointers-e5a50a?style=flat&logo=buffer&logoColor=white&labelColor=e5a50a" height="20" /> | Architecture | Bounds-tracked slices instead of null-terminated strings. |
+| **Build System** | <img src="https://img.shields.io/badge/Merlin_TUI-0082fc?style=flat&logo=d&logoColor=white&labelColor=0082fc" height="20" /> | Merlin | Interactive D-based build orchestration. |
 
-```text
-camelot/
-├── include/camelot/      # Unified framework API
-│   ├── core/             # Tri-state Result monad & safety poisoning guards
-│   ├── memory/           # Monotonic Arena & Allocator dispatch interfaces
-│   └── types/            # Fixed-width primitive specifications
-├── src/                  # Implementation Source Code
-├── tests/                # Verification Suite
-├── merlin.d              # Standalone Merlin build orchestrator in D
-└── Makefile              # Transparent bootstrap Makefile wrapper
-```
+## <img src="https://cdn.simpleicons.org/c/ffffff" width="24" style="vertical-align: bottom;" /> Memory Model
+No implicit allocation or garbage collection.
+*   **Allocator VTable**: All dynamic structures take an explicit `Allocator` pointer. *(Code)*
+*   **Arenas**: Bulk deallocation by resetting an offset pointer. *(Code)*
+*   **Fat Pointers**: Pointer + length slices for bounds tracking (structural, not compiler-enforced). *(Code)*
+*   **Vector Growth**: Arrays scale at 1.5x (`cap = cap + (cap >> 1)`) to permit block recycling by the host allocator. *(Code)*
 
----
+## <img src="https://cdn.simpleicons.org/linux/ffffff" width="24" style="vertical-align: bottom;" /> Error Handling
+Explicit propagation only.
+*   **Result**: Fallible functions return a `[[nodiscard]]` union (`OK`, `NIL`, `ERR`). *(Attributes)*
+*   **Explicit Deferral**: Cleanup uses a single `goto defer;` block. *(Convention)*
+*   **Explicit Deinit**: Manual teardown calls (e.g., `VECTOR_deinit`). *(Convention)*
+*   **Poisoning**: Unsafe libc functions (`strcpy`) are statically blocked unless explicitly bypassed per translation unit via a `#define ALLOW_UNSAFE` macro. 
+    *   *GCC/Clang*: Enforced via `#pragma GCC poison`.
+    *   *MSVC*: Enforced via `/W4` with SAL annotations.
 
-## 🛡️ Security Policy Guarantees
+## <img src="https://cdn.simpleicons.org/d/ffffff" width="24" style="vertical-align: bottom;" /> Build System (Merlin)
+**Merlin** is a standalone D-based tool providing an interactive TUI for executing builds.
 
-All compiles automatically inherit the following enterprise-grade exploit mitigations:
-- **ASLR Compatibility:** Complies via `-fPIE` / `-pie` (Position Independent Executable).
-- **Stack Protection:** Hardened via `-fstack-protector-strong` stack canaries.
-- **Memory Sandboxing:** Traps runtime errors, memory leaks, and bounds overflow via `-fsanitize=address,undefined,leak`.
-- **Undefined Behavior Mitigation:** Relies on defined two's-complement integer wrapping (`-fwrapv`), traps integer overflows (`-ftrapv`), and disables unsafe standard functions (`strcpy`, `strcat`) via static compile-time poisoning.
+## <img src="https://cdn.simpleicons.org/llvm/ffffff" width="24" style="vertical-align: bottom;" /> Testing
+*   **Sanitizers**: ASan and UBSan enabled (`-fsanitize=address,undefined,signed-overflow`). *(Debug only)*
+*   **Traps**: Signed integer overflow aborts (`-ftrapv`). *(Debug only)*
+
+## <img src="https://cdn.simpleicons.org/gnu/ffffff" width="24" style="vertical-align: bottom;" /> Compilation
+*   **All Builds**: ASLR (`-fPIE`, `-pie`), non-executable stack, stack protection and fortified source. *(Compiler flags)*
+*   **Release**: Force two's complement integer wrap (`-fwrapv`), disable optimizations assuming non-null pointers (`-fno-delete-null-pointer-checks`) and disable strict overflow optimizations (`-fno-strict-overflow`). *(Compiler flags)*
+
+## <img src="https://cdn.simpleicons.org/github/ffffff" width="24" style="vertical-align: bottom;" /> Integration
+Download the latest source release, compile the static library via **Merlin** and link it to your project.
+
+## <img src="https://cdn.simpleicons.org/markdown/ffffff" width="24" style="vertical-align: bottom;" /> Limitations
+*   **No RAII**: Resource management is entirely manual.
+*   **No Absolute Safety**: Safety depends on following conventions. Misuse can still cause memory errors.
+*   **Overhead**: Hash maps with open addressing require parallel metadata arrays and tracked strings (`OwnedString`) use an extra pointer.
