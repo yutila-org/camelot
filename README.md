@@ -25,13 +25,10 @@ Camelot is a general-purpose C framework. It is not a utility library. It provid
 Camelot provides a unified architecture for application development.
 
 *   **Memory Management**: Requires explicit arena allocators or VTable dispatch interfaces.
-*   **Concurrency & Parallelism**: Abstracts thread lifecycles and mutex boundaries for parallel execution.
-*   **Networking**: Wraps socket interfaces into state-machine-driven connections.
-*   **Data Structures**: Implements bounds-tracked slices, hash maps with open addressing and vector growth structures.
-*   **String Handling**: Provides built-in UTF-8 parsing and tracked `OwnedString` structures.
-*   **Data Serialization**: Parses and emits structured data formats.
-*   **Random Generation**: Exposes modular PRNG algorithms via parameter selection with a predefined default algorithm.
-*   **Ecosystem Integration**: Interfaces with external C libraries (Raylib or GTK) through explicit memory boundaries.
+*   **Core Primitives**: Standardizes precise integer types and structural boundaries.
+*   **Error Handling**: Enforces explicit tri-state return patterns.
+*   **File I/O**: Wraps standard filesystem operations into structural interfaces.
+*   **Build System**: Orchestrates compilation interactively via the Merlin engine.
 
 ## <img src="https://cdn.simpleicons.org/sentry/ffffff" width="24" style="vertical-align: bottom;" /> Guarantee Model
 *   **Compiler-Enforced**: Type warnings, unhandled `[[nodiscard]]` returns and poisoned function bans.
@@ -62,6 +59,4 @@ Camelot is split into modular domains mapping `include/camelot/` to `src/`.
 Download the latest source release, compile the static library via **Merlin** and link it to your project.
 
 ## <img src="https://cdn.simpleicons.org/markdown/ffffff" width="24" style="vertical-align: bottom;" /> Limitations
-*   **No RAII**: Resource management is entirely manual.
-*   **No Absolute Safety**: Safety depends on following conventions. Misuse causes memory errors.
-*   **Overhead**: Hash maps require parallel metadata arrays and tracked strings use an extra pointer.
+Camelot is not designed to be the savior of C. It is simply built to solve the tedious situations I personally encounter as a C developer, like wrestling with file I/O or hidden memory allocations. Because of this practical focus, it accepts inherent architectural trade-offs. For example, RAII cannot be implemented due to cross-platform compiler incompatibilities, meaning resource teardown remains entirely manual. Absolute safety is impossible without a borrow checker, so protection relies strictly on developer conventions. Finally, structural features like tracked strings or open-addressed hash maps introduce minor overhead via extra pointers and parallel metadata arrays.
