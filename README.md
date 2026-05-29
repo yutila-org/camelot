@@ -21,14 +21,6 @@
 ## <img src="https://cdn.simpleicons.org/blueprint/ffffff" width="24" style="vertical-align: bottom;" /> Scope
 Camelot is a general-purpose C framework. It is not a utility library. It provides structural alternatives to libc subsystems that expose implicit allocation behavior or hidden state transitions. It requires explicit allocator pointers instead of unmanaged malloc calls and enforces a tri-state error model. It intentionally provides no API compatibility with standard libc. It is not freestanding and relies on underlying libc components. Safety relies on explicit conventions, custom allocators and strict compiler flags.
 
-## <img src="https://cdn.simpleicons.org/target/ffffff" width="24" style="vertical-align: bottom;" /> Capabilities
-Camelot provides a unified architecture for application development.
-
-*   **Memory Management**: Requires explicit arena allocators or VTable dispatch interfaces.
-*   **Core Primitives**: Standardizes precise integer types and structural boundaries.
-*   **Error Handling**: Enforces explicit tri-state return patterns.
-*   **File I/O**: Wraps standard filesystem operations into structural interfaces.
-*   **Build System**: Orchestrates compilation interactively via the Merlin engine.
 
 ## <img src="https://cdn.simpleicons.org/sentry/ffffff" width="24" style="vertical-align: bottom;" /> Guarantee Model
 *   **Compiler-Enforced**: Type warnings, unhandled `[[nodiscard]]` returns and poisoned function bans.
