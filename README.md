@@ -6,7 +6,7 @@
 
   <h1>Camelot</h1>
    
-  **A Core Systems Component Toolkit**
+  **A modern, safe and ergonomic C framework.**
 
   <br />
   <br />
@@ -19,11 +19,11 @@
 <br />
 
 ## <img src="https://cdn.simpleicons.org/blueprint/ffffff" width="24" style="vertical-align: bottom;" /> Overview
-Camelot is a core component toolkit for C applications. It provides structural alternatives to libc subsystems that expose implicit allocation behavior or hidden state transitions (e.g., dynamic allocation, I/O streams, null-terminated strings). It intentionally provides no API compatibility with standard libc. It is not freestanding and relies on underlying libc components. Safety relies on explicit conventions, custom allocators and strict compiler flags rather than language features.
+Camelot is a modern, safe and ergonomic C framework. It provides structural alternatives to libc subsystems that expose implicit allocation behavior or hidden state transitions. It requires explicit allocator pointers instead of unmanaged malloc and enforces a tri-state error model. It intentionally provides no API compatibility with standard libc. It is not freestanding and relies on underlying libc components. Safety relies on explicit conventions, custom allocators and strict compiler flags rather than language features.
 
 ## <img src="https://cdn.simpleicons.org/target/ffffff" width="24" style="vertical-align: bottom;" /> Core Design Goals
 *   **Explicit Control**: Manual and traceable resource, memory and error management.
-*   **Portability**: No runtime-altering compiler extensions (e.g., no GCC `__attribute__((cleanup))`).
+*   **Cross-Platform Portability**: Fully portable across GCC, Clang and MSVC. No runtime-altering compiler extensions (e.g., no GCC `__attribute__((cleanup))`).
 *   **Predictability**: Strict compiler flags constrain undefined behavior and pragmas block unsafe functions.
 
 ## <img src="https://cdn.simpleicons.org/sentry/ffffff" width="24" style="vertical-align: bottom;" /> Guarantee Model
