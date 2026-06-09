@@ -8,20 +8,17 @@
    
   **A general-purpose C framework.**
 
-  <br />
-  <br />
-
-  <a href="https://en.cppreference.com/w/c/23" target="_blank" style="text-decoration: none; color: inherit;">
-    <img src="https://cdn.simpleicons.org/c/A8B9CC" alt="C" width="24" style="vertical-align: middle;" /> <span style="vertical-align: middle; margin-right: 15px; font-weight: bold;">C</span>
+  <a href="https://en.cppreference.com/w/c/23" target="_blank" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/C23-A8B9CC?style=for-the-badge&logo=c&logoColor=white" alt="C" />
   </a>
-  <a href="https://www.gnu.org/software/make/" target="_blank" style="text-decoration: none; color: inherit;">
-    <img src="https://cdn.simpleicons.org/gnu/A42E2B" alt="Make" width="24" style="vertical-align: middle;" /> <span style="vertical-align: middle; margin-right: 15px; font-weight: bold;">Make</span>
+  <a href="https://www.gnu.org/software/make/" target="_blank" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/Make-A42E2B?style=for-the-badge&logo=gnu&logoColor=white" alt="Make" />
   </a>
-  <a href="https://www.mozilla.org/en-US/MPL/2.0/" target="_blank" style="text-decoration: none; color: inherit;">
-    <img src="https://cdn.simpleicons.org/mozilla/FF0000" alt="MPL-2.0" width="24" style="vertical-align: middle;" /> <span style="vertical-align: middle; margin-right: 15px; font-weight: bold;">MPL-2.0</span>
+  <a href="https://www.mozilla.org/en-US/MPL/2.0/" target="_blank" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/MPL_2.0-FF0000?style=for-the-badge&logo=mozilla&logoColor=white" alt="MPL-2.0" />
   </a>
-  <a href="https://github.com/yutila-org/merlin" target="_blank" style="text-decoration: none; color: inherit;">
-    <img src="https://raw.githubusercontent.com/yutila-org/merlin/main/logo.svg" alt="Merlin" width="24" style="vertical-align: middle;" /> <span style="vertical-align: middle; font-weight: bold;">Merlin</span>
+  <a href="https://github.com/yutila-org/merlin" target="_blank" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/Merlin-FF00FF?style=for-the-badge" alt="Merlin" />
   </a>
 
 </div>
