@@ -8,18 +8,10 @@
    
   **A general-purpose C framework.**
 
-  <a href="https://en.cppreference.com/w/c/23" target="_blank" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/C23-A8B9CC?style=for-the-badge&logo=c&logoColor=white" alt="C" />
-  </a>
-  <a href="https://www.gnu.org/software/make/" target="_blank" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/Make-A42E2B?style=for-the-badge&logo=gnu&logoColor=white" alt="Make" />
-  </a>
-  <a href="https://www.mozilla.org/en-US/MPL/2.0/" target="_blank" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/MPL_2.0-FF0000?style=for-the-badge&logo=mozilla&logoColor=white" alt="MPL-2.0" />
-  </a>
-  <a href="https://github.com/yutila-org/merlin" target="_blank" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/Merlin-FF00FF?style=for-the-badge" alt="Merlin" />
-  </a>
+  [![C](https://img.shields.io/badge/C23-A8B9CC?style=for-the-badge&logo=c&logoColor=white)](https://en.cppreference.com/w/c/23)
+  [![Make](https://img.shields.io/badge/Make-A42E2B?style=for-the-badge&logo=gnu&logoColor=white)](https://www.gnu.org/software/make/)
+  [![MPL-2.0](https://img.shields.io/badge/MPL_2.0-FF0000?style=for-the-badge&logo=mozilla&logoColor=white)](https://www.mozilla.org/en-US/MPL/2.0/)
+  [![Merlin](https://img.shields.io/badge/Merlin-FF00FF?style=for-the-badge)](https://github.com/yutila-org/merlin)
 
 </div>
 
