@@ -66,3 +66,7 @@ Thumbs.db
 *.log
 *.fail.c
 test_io_artifact.txt
+
+# Install Scripts (bundled with binaries)
+install.sh
+install.ps1

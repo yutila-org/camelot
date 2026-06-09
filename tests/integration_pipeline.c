@@ -1,6 +1,6 @@
 #include "test_utils.h"
 
-void test_pipeline() {
+void test_integration_pipeline_full(void) {
     TrackingAllocator talloc = {
         .base = { .allocate = tracking_allocate, .deallocate = tracking_free },
         .total_allocated = 0,
@@ -12,18 +12,18 @@ void test_pipeline() {
     String data = STRING_new("excalibur\nlancelot\nmerlin\ngawain", 32);
     
     Result wr = IO_write(alloc, test_path, data);
-    assert(wr.state == OK);
+    TEST_ASSERT_EQUAL(OK, wr.state);
     
     Result rr = IO_read(alloc, test_path);
-    assert(rr.state == OK);
+    TEST_ASSERT_EQUAL(OK, rr.state);
     OwnedString* file_data = (OwnedString*)rr.payload.val;
     
     Result sr = STRING_split(alloc, file_data->view, '\n');
-    assert(sr.state == OK);
+    TEST_ASSERT_EQUAL(OK, sr.state);
     Vector* lines = (Vector*)sr.payload.val;
     
     Result tr = TABLE_init(alloc, 16);
-    assert(tr.state == OK);
+    TEST_ASSERT_EQUAL(OK, tr.state);
     Table* table = (Table*)tr.payload.val;
     
     u32 power_levels[] = { 9000, 8500, 10000, 8000 };
@@ -31,14 +31,14 @@ void test_pipeline() {
     for (size_t i = 0; i < lines->len; i++) {
         String* line = (String*)((u8*)lines->data + (i * lines->stride));
         Result set_r = TABLE_set(table, *line, &power_levels[i]);
-        assert(set_r.state == OK);
+        TEST_ASSERT_EQUAL(OK, set_r.state);
     }
     
     // Verify pipeline
     String search_key = STRING_new("merlin", 6);
     Result get_r = TABLE_get(table, search_key);
-    assert(get_r.state == OK);
-    assert(*(u32*)get_r.payload.val == 10000);
+    TEST_ASSERT_EQUAL(OK, get_r.state);
+    TEST_ASSERT_EQUAL(10000, *(u32*)get_r.payload.val);
     
     // Teardown
     TABLE_deinit(table);
@@ -47,5 +47,5 @@ void test_pipeline() {
     OWNEDSTRING_deinit(file_data);
     remove("integration_test_file.tmp");
     
-    assert(talloc.total_allocated == talloc.total_freed);
+    TEST_ASSERT_EQUAL(talloc.total_allocated, talloc.total_freed);
 }

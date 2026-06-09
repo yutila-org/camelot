@@ -1,6 +1,6 @@
 #include "test_utils.h"
 
-void test_io() {
+void test_io_read_write_append(void) {
     TrackingAllocator talloc = {
         .base = { .allocate = tracking_allocate, .deallocate = tracking_free },
         .total_allocated = 0,
@@ -12,26 +12,26 @@ void test_io() {
     String test_content = STRING_new("camelot_io_test_data\nline2\nline3", 32);
     
     Result res_write = IO_write(alloc, test_path, test_content);
-    assert(res_write.state == OK);
+    TEST_ASSERT_EQUAL(OK, res_write.state);
     
     String append_content = STRING_new("\nline4", 6);
     Result res_append = IO_append(alloc, test_path, append_content);
-    assert(res_append.state == OK);
+    TEST_ASSERT_EQUAL(OK, res_append.state);
 
     Result res_read = IO_read(alloc, test_path);
-    assert(res_read.state == OK);
+    TEST_ASSERT_EQUAL(OK, res_read.state);
     OwnedString* read_str = (OwnedString*)res_read.payload.val;
-    assert(read_str->view.len == 38);
+    TEST_ASSERT_EQUAL(38, read_str->view.len);
     
     Result split_res = STRING_split(alloc, read_str->view, '\n');
-    assert(split_res.state == OK);
+    TEST_ASSERT_EQUAL(OK, split_res.state);
     Vector* lines = (Vector*)split_res.payload.val;
-    assert(lines->len == 4);
+    TEST_ASSERT_EQUAL(4, lines->len);
     
     VECTOR_deinit(lines);
     alloc->deallocate(alloc, lines, sizeof(Vector));
     OWNEDSTRING_deinit(read_str);
     remove("test_io_artifact.txt");
     
-    assert(talloc.total_allocated == talloc.total_freed);
+    TEST_ASSERT_EQUAL(talloc.total_allocated, talloc.total_freed);
 }

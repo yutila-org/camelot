@@ -10,29 +10,45 @@
 # ==============================================================================
 
 SHELL := /bin/bash
-MERLIN_BIN := bin/merlin
+export CC ?= clang
+
+# Resolve merlin dynamically (Check PATH, fallback to adjacent repo)
+ifeq (, $(shell command -v merlin 2>nul || where merlin 2>nul))
+    # Gets the directory where THIS Makefile lives, then goes up one level to look for merlin
+    ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+    MERLIN := $(ROOT_DIR)../merlin/bin/merlin$(if $(OS),.exe,)
+else
+    MERLIN := merlin
+endif
 
 .PHONY: default
-default: $(MERLIN_BIN)
-	@./$(MERLIN_BIN) all $(if $(RELEASE),RELEASE=1,)
+default: all
 
-$(MERLIN_BIN): $(wildcard merlin/*.d)
-	@mkdir bin 2>nul || cd .
-	@echo -e "\033[1;36m[BOOTSTRAP] Building standalone Merlin Engine...\033[0m"
-	@dmd merlin/*.d -of=bin/merlin || (echo -e "\033[1;31mError: D compiler (dmd) not found or compilation failed! Please install dmd first.\033[0m"; exit 1)
+$(MERLIN):
+	@echo "[BOOTSTRAP] Merlin not found in PATH. Building from adjacent repository (../merlin)..."
+	@$(MAKE) -C $(ROOT_DIR)../merlin
 
 .PHONY: all
-all: $(MERLIN_BIN)
-	@./$(MERLIN_BIN) all $(if $(RELEASE),RELEASE=1,)
+all: $(MERLIN)
+	@$(MERLIN) all $(if $(RELEASE),RELEASE=1,)
 
 .PHONY: test
-test: $(MERLIN_BIN)
-	@./$(MERLIN_BIN) test $(if $(RELEASE),RELEASE=1,)
+test: $(MERLIN)
+	@$(MERLIN) test $(if $(RELEASE),RELEASE=1,)
 
 .PHONY: run
-run: $(MERLIN_BIN)
-	@./$(MERLIN_BIN) run $(if $(RELEASE),RELEASE=1,)
+run: $(MERLIN)
+	@$(MERLIN) run $(if $(RELEASE),RELEASE=1,)
 
 .PHONY: clean
-clean: $(MERLIN_BIN)
-	@./$(MERLIN_BIN) clean $(if $(RELEASE),RELEASE=1,)
+clean: $(MERLIN)
+	@$(MERLIN) clean $(if $(RELEASE),RELEASE=1,)
+
+# Prevent catch-all from trying to build the Makefile itself
+Makefile: ;
+
+# Catch-all rule for VS Code Unity Test Extensions
+%: $(MERLIN)
+	@echo "[VS Code Extension Intercept] Building unified test suite via Merlin for target '$@'..."
+	@$(MERLIN) test $(if $(RELEASE),RELEASE=1,)
+	@cp bin/test_* $@$(if $(OS),.exe,) 2>nul || cp bin/test_* $@ 2>nul || cd .

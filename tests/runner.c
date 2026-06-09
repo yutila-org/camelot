@@ -1,27 +1,42 @@
-#include <stdio.h>
+#include "unity.h"
 
-void test_memory();
-void test_slice_and_string();
-void test_ds();
-void test_io();
-void test_pipeline();
+extern void test_memory_types_size(void);
+extern void test_memory_arena_allocate(void);
+extern void test_memory_result_types(void);
+
+extern void test_slice_operations(void);
+extern void test_string_format(void);
+
+extern void test_ds_vector(void);
+extern void test_ds_list(void);
+extern void test_ds_table(void);
+extern void test_ds_table_teardown(void);
+
+extern void test_io_read_write_append(void);
+
+extern void test_integration_pipeline_full(void);
+
+void setUp(void) {}
+void tearDown(void) {}
 
 int main(void) {
-    printf("[RUN] Starting Memory Tests...\n");
-    test_memory();
+    UNITY_BEGIN();
     
-    printf("[RUN] Starting Slice & String Tests...\n");
-    test_slice_and_string();
+    RUN_TEST(test_memory_types_size);
+    RUN_TEST(test_memory_arena_allocate);
+    RUN_TEST(test_memory_result_types);
     
-    printf("[RUN] Starting Data Structure Tests...\n");
-    test_ds();
+    RUN_TEST(test_slice_operations);
+    RUN_TEST(test_string_format);
     
-    printf("[RUN] Starting I/O Tests...\n");
-    test_io();
+    RUN_TEST(test_ds_vector);
+    RUN_TEST(test_ds_list);
+    RUN_TEST(test_ds_table);
+    RUN_TEST(test_ds_table_teardown);
     
-    printf("[RUN] Starting Integration Pipeline...\n");
-    test_pipeline();
+    RUN_TEST(test_io_read_write_append);
     
-    printf("\nAll Camelot tests passed successfully.\n");
-    return 0;
+    RUN_TEST(test_integration_pipeline_full);
+    
+    return UNITY_END();
 }

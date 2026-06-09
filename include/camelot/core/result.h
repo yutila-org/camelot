@@ -16,10 +16,8 @@ typedef enum {
     ERR
 } State;
 
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202000L
 #define CAMELOT_NODISCARD [[nodiscard]]
-#elif defined(__GNUC__) || defined(__clang__)
-#define CAMELOT_NODISCARD __attribute__((warn_unused_result))
 #else
 #define CAMELOT_NODISCARD
 #endif
