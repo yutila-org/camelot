@@ -11,7 +11,7 @@
   [![C](https://img.shields.io/badge/C23-A8B9CC?style=for-the-badge&logo=c&logoColor=white)](https://en.cppreference.com/w/c/23)
   [![Make](https://img.shields.io/badge/Make-A42E2B?style=for-the-badge&logo=gnu&logoColor=white)](https://www.gnu.org/software/make/)
   [![MPL-2.0](https://img.shields.io/badge/MPL_2.0-FF0000?style=for-the-badge&logo=mozilla&logoColor=white)](https://www.mozilla.org/en-US/MPL/2.0/)
-  [![Merlin](https://img.shields.io/badge/Merlin-FF00FF?style=for-the-badge)](https://github.com/yutila-org/merlin)
+  [![Merlin](https://img.shields.io/badge/Merlin-1E1E1E?style=for-the-badge&logo=data:image/svg%2Bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+PHBhdGggZD0iTTIwIDgwIEwyMCA0MCBMNTAgNzAgTDgwIDQwIEw4MCA4MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmYwMGZmIiBzdHJva2Utd2lkdGg9IjEyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjMwIiByPSI4IiBmaWxsPSIjMDBmZmZmIi8+PC9zdmc+)](https://github.com/yutila-org/merlin)
 
 </div>
 
