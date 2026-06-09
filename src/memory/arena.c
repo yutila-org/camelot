@@ -1,3 +1,4 @@
+#define CAMELOT_ALLOW_UNSAFE
 #include "camelot/memory/arena.h"
 
 void* ARENA_allocate(Allocator* self, size_t size, size_t align) {

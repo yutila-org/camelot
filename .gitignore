@@ -60,3 +60,9 @@ Thumbs.db
 *~
 .clangd/
 .cache/
+
+# Test artifacts and temp files
+*.tmp
+*.log
+*.fail.c
+test_io_artifact.txt

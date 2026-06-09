@@ -24,18 +24,27 @@ void main(string[] args) {
         string cmd = args[1];
         if (cmd == "all") {
             if (release) {
-                writefln("\033[1;36m[MERLIN] Running mandatory sanitized test suite before Release build...\033[0m");
+                writefln("\033[1;36m[PRE-FLIGHT] Running mandatory sanitized test suite before Release build...\033[0m");
                 runTests(false);
-                writefln("\033[1;36m[MERLIN] Tests passed! Proceeding with optimized Release build...\033[0m\n");
+                writefln("\033[1;36m[PRE-FLIGHT SUCCESS] Tests passed! Proceeding with optimized Release build...\033[0m\n");
             }
             buildTarget(release, false);
-            writefln("\n\033[1;38;5;198m( ๑>⩊<๑ )\033[0m \033[32m< \"Ta-da! Your binary is ready!\"\033[0m\n");
+            writefln("\n\033[1;32m[BUILD SUCCESS] Target compiled and linked successfully.\033[0m\n");
         } else if (cmd == "test") {
             runTests(release);
         } else if (cmd == "run") {
             runTarget(release);
         } else if (cmd == "clean") {
             cleanAll();
+        } else if (cmd == "init") {
+            string projName = args.length > 2 ? args[2] : baseName(getcwd());
+            initProject(".", projName);
+        } else if (cmd == "new") {
+            if (args.length < 3) {
+                writefln("\033[1;31m[ERROR] Please specify a project name. (e.g., merlin new my_app)\033[0m");
+                return;
+            }
+            initProject(args[2], args[2]);
         } else {
             writefln("Unknown target: %s", cmd);
         }
@@ -80,18 +89,24 @@ void main(string[] args) {
     string targetName = baseName(getcwd());
     string compilerVersion = "Unknown";
     try {
-        auto res = executeShell("gcc -dumpversion");
+        auto res = executeShell("clang -dumpversion");
         if (res.status == 0) compilerVersion = res.output.strip();
     } catch (Exception e) {}
 
     // Dynamic Entrance Twinkle Animation within the SAME unified box!
-    drawDashboard("( -⩊- )", "Summoning build portal...", "          " ~ C_YELLOW ~ "+" ~ C_RESET, 11, 21 + 25, release, srcCount, headerCount, testCount, compilerVersion, targetName);
+    drawDashboard("( -⩊- )", "Summoning build portal...", 
+        "          " ~ C_YELLOW ~ "+" ~ C_RESET, 11, 21 + 25, release, srcCount, 
+        headerCount, testCount, compilerVersion, targetName);
     Thread.sleep(180.msecs);
 
-    drawDashboard("( •⩊• )", "Focusing mana energy...", "       " ~ C_YELLOW ~ "*  " ~ C_MAGENTA ~ "." ~ C_YELLOW ~ "  *" ~ C_RESET, 15, 21 + 24, release, srcCount, headerCount, testCount, compilerVersion, targetName);
+    drawDashboard("( •⩊• )", "Focusing mana energy...", 
+        "       " ~ C_YELLOW ~ "*  " ~ C_MAGENTA ~ "." ~ C_YELLOW ~ "  *" ~ C_RESET, 
+        15, 21 + 24, release, srcCount, headerCount, testCount, compilerVersion, targetName);
     Thread.sleep(180.msecs);
 
-    drawDashboard("( ๑>⩊<๑ )", "Alakazam! Welcome back!", "       " ~ C_YELLOW ~ "✦  " ~ C_MAGENTA ~ "." ~ C_YELLOW ~ "  ✦" ~ C_RESET, 15, 23 + 23, release, srcCount, headerCount, testCount, compilerVersion, targetName);
+    drawDashboard("( ๑>⩊<๑ )", "Alakazam! Welcome back!", 
+        "       " ~ C_YELLOW ~ "✦  " ~ C_MAGENTA ~ "." ~ C_YELLOW ~ "  ✦" ~ C_RESET, 
+        15, 23 + 23, release, srcCount, headerCount, testCount, compilerVersion, targetName);
     Thread.sleep(220.msecs);
 
     // Final static frame draw with random quote
@@ -106,7 +121,9 @@ void main(string[] args) {
         "No bugs can escape my spellbook!"
     ];
     string randomQuote = quotes[uniform(0, quotes.length)];
-    drawDashboard("( •⩊• )", randomQuote, "          " ~ C_MAGENTA ~ "." ~ C_RESET, 11, 21 + cast(int)randomQuote.count, release, srcCount, headerCount, testCount, compilerVersion, targetName);
+    drawDashboard("( •⩊• )", randomQuote, 
+        "          " ~ C_MAGENTA ~ "." ~ C_RESET, 11, 21 + cast(int)randomQuote.count, 
+        release, srcCount, headerCount, testCount, compilerVersion, targetName);
 
     // Interactive magical command shell!
     while (true) {
@@ -119,18 +136,19 @@ void main(string[] args) {
         }
         string input = line.strip().toLower();
         if (input == "exit" || input == "quit" || input == "5" || input == "q") {
-            writefln("\n\033[1;38;5;198m( ๑◡⩊◡๑ )\033[0m \033[33m< \"Farewell, young wizard! May your spells stay sharp.\"\033[0m\n");
+            writefln("\n\033[1;38;5;198m( ๑◡⩊◡๑ )\033[0m " ~
+                "\033[33m< \"Farewell, young wizard! May your spells stay sharp.\"\033[0m\n");
             break;
         }
 
         if (input == "all" || input == "build" || input == "1") {
             if (release) {
-                writefln("\033[1;36m[MERLIN] Running mandatory sanitized test suite before Release build...\033[0m");
+                writefln("\033[1;36m[PRE-FLIGHT] Running mandatory sanitized test suite before Release build...\033[0m");
                 runTests(false);
-                writefln("\033[1;36m[MERLIN] Tests passed! Proceeding with optimized Release build...\033[0m\n");
+                writefln("\033[1;36m[PRE-FLIGHT SUCCESS] Tests passed! Proceeding with optimized Release build...\033[0m\n");
             }
             buildTarget(release, false);
-            writefln("\n\033[1;38;5;198m( ๑>⩊<๑ )\033[0m \033[32m< \"Ta-da! Your C framework build is complete!\"\033[0m\n");
+            writefln("\n\033[1;32m[BUILD SUCCESS] Target compiled and linked successfully.\033[0m\n");
         } else if (input == "test" || input == "2") {
             runTests(release);
         } else if (input == "run" || input == "3") {
@@ -140,6 +158,17 @@ void main(string[] args) {
             srcCount = 0;
             headerCount = 0;
             testCount = 0;
+        } else if (input.startsWith("init")) {
+            string[] parts = input.split(" ");
+            string projName = parts.length > 1 ? parts[1] : baseName(getcwd());
+            initProject(".", projName);
+        } else if (input.startsWith("new")) {
+            string[] parts = input.split(" ");
+            if (parts.length < 2) {
+                writefln("\033[1;31m[ERROR] Please specify a project name. (e.g., new my_app)\033[0m");
+            } else {
+                initProject(parts[1], parts[1]);
+            }
         } else if (input == "help" || input == "dashboard" || input == "h" || input == "") {
             // Re-scan dynamic stats in case files were added or removed
             srcCount = 0;
@@ -173,9 +202,11 @@ void main(string[] args) {
                 }
             }
             randomQuote = quotes[uniform(0, quotes.length)];
-            drawDashboard("( •⩊• )", randomQuote, "          " ~ C_MAGENTA ~ "." ~ C_RESET, 11, 21 + cast(int)randomQuote.count, release, srcCount, headerCount, testCount, compilerVersion, targetName);
+            drawDashboard("( •⩊• )", randomQuote, 
+                "          " ~ C_MAGENTA ~ "." ~ C_RESET, 11, 21 + cast(int)randomQuote.count, 
+                release, srcCount, headerCount, testCount, compilerVersion, targetName);
         } else {
-            writefln("\033[1;31mUnknown spell: \"%s\". (Spells: all, test, run, clean, help, exit)\033[0m", input);
+            writefln("\033[1;31mUnknown spell: \"%s\". (Spells: all, test, run, clean, init, new, help, exit)\033[0m", input);
         }
     }
 }

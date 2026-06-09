@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <assert.h>
-#include "camelot/camelot.h"
+#include "test_utils.h"
 
-int main(void) {
+void test_memory() {
     static_assert(sizeof(u8) == 1, "u8 must be 1 byte");
     static_assert(sizeof(u16) == 2, "u16 must be 2 bytes");
     static_assert(sizeof(u32) == 4, "u32 must be 4 bytes");
@@ -17,10 +15,7 @@ int main(void) {
 
     u8 backing_buffer[1024];
     Arena arena = {
-        .base = {
-            .allocate = ARENA_allocate,
-            .free = nullptr
-        },
+        .base = { .allocate = ARENA_allocate, .deallocate = nullptr },
         .buffer = backing_buffer,
         .capacity = 1024,
         .offset = 0
@@ -41,6 +36,16 @@ int main(void) {
     assert(res.state == OK);
     assert(res.payload.val == nullptr);
 
-    printf("All Camelot tests passed successfully.\n");
-    return 0;
+    Result res_err = { .state = ERR, .payload.err_code = ERR_OUT_OF_MEMORY };
+    assert(res_err.state == ERR);
+    assert(res_err.payload.err_code == ERR_OUT_OF_MEMORY);
+
+    Result res_nil = { .state = NIL, .payload.val = nullptr };
+    assert(res_nil.state == NIL);
+    
+    Result res_pun;
+    res_pun.state = ERR;
+    res_pun.payload.val = (void*)0xFFFFFFFFFFFFFFFFULL;
+    res_pun.payload.err_code = ERR_FILE_ERROR;
+    assert(res_pun.payload.err_code == ERR_FILE_ERROR);
 }

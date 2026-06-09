@@ -18,7 +18,7 @@ default: $(MERLIN_BIN)
 
 $(MERLIN_BIN): $(wildcard merlin/*.d)
 	@mkdir bin 2>nul || cd .
-	@echo -e "\033[1;38;5;198m( ๑•̀⩊•́๑ )\033[0m \033[36m< \"Bootstrapping standalone Merlin Build Engine...\"\033[0m"
+	@echo -e "\033[1;36m[BOOTSTRAP] Building standalone Merlin Engine...\033[0m"
 	@dmd merlin/*.d -of=bin/merlin || (echo -e "\033[1;31mError: D compiler (dmd) not found or compilation failed! Please install dmd first.\033[0m"; exit 1)
 
 .PHONY: all
