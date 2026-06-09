@@ -16,6 +16,8 @@ jobs:
         uses: dlang-community/setup-dlang@v1
         with:
           compiler: dmd-latest
+      - name: Clone Merlin Orchestrator
+        run: git clone https://github.com/yutila-org/merlin.git ../merlin
       - name: Compile Code
         run: make
       - name: Run Tests
@@ -147,6 +149,8 @@ jobs:
         uses: dlang-community/setup-dlang@v1
         with:
           compiler: dmd-latest
+      - name: Clone Merlin Orchestrator
+        run: git clone https://github.com/yutila-org/merlin.git ../merlin
 
       - name: Build Release Binary
         run: |
