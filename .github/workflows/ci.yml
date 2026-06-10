@@ -139,7 +139,6 @@ jobs:
     name: Deploy Release Asset
     needs: [build, secret-scan]
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: write
     steps:
@@ -161,6 +160,7 @@ jobs:
           tar -czvf camelot-linux-amd64.tar.gz bin/camelot include/
 
       - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           files: camelot-linux-amd64.tar.gz
