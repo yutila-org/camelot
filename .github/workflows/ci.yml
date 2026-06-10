@@ -1,4 +1,4 @@
-name: Camelot CI/CD
+name: Camelot CI
 
 on:
   push:
@@ -135,12 +135,10 @@ jobs:
       - name: Validate dependencies using deps.dev / OSV
         uses: google/osv-scanner-action/osv-scanner-action@v1.8.2
 
-  deploy:
-    name: Deploy Release Asset
+  release-test:
+    name: Test Release Build
     needs: [build, secret-scan]
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -158,12 +156,3 @@ jobs:
       - name: Package Release Assets
         run: |
           tar -czvf camelot-linux-amd64.tar.gz bin/camelot include/
-
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: camelot-linux-amd64.tar.gz
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
