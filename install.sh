@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+
+## Currently, https://github.com/yutila-org/merlin/releases/latest/download/install.sh doesn't work
+## Probably because there is no "latest release". That implies it can work in future. Here is a
+## temporary solution:
+
+## TODO: Replace this path when there is a latest release
+MERLIN="https://github.com/yutila-org/merlin/releases/download/alpha/install.sh"
+
 set -e
 
 if ! command -v git &> /dev/null; then
@@ -46,7 +54,7 @@ fi
 
 if ! command -v merlin &> /dev/null; then
     echo -e "\033[1;33m[NOTICE] Merlin build engine not found. Installing it now...\033[0m"
-    curl -sSL https://github.com/yutila-org/merlin/releases/latest/download/install.sh | bash
+    curl -sSL $MERLIN | bash
 fi
 
 echo -e "\033[1;32m[SUCCESS] Camelot Framework installed to $CAMELOT_HOME!\033[0m"

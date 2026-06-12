@@ -12,21 +12,16 @@
 SHELL := /bin/bash
 export CC ?= clang
 
-# Resolve merlin dynamically (Check PATH, fallback to adjacent repo)
-ifeq (, $(shell command -v merlin 2>nul || where merlin 2>nul))
-    # Gets the directory where THIS Makefile lives, then goes up one level to look for merlin
-    ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-    MERLIN := $(ROOT_DIR)../merlin/bin/merlin$(if $(OS),.exe,)
-else
-    MERLIN := merlin
-endif
+ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+MERLIN := ./merlin
 
 .PHONY: default
 default: all
 
 $(MERLIN):
-	@echo "[BOOTSTRAP] Merlin not found in PATH. Building from adjacent repository (../merlin)..."
-	@$(MAKE) -C $(ROOT_DIR)../merlin
+	@echo "[BOOTSTRAP] Merlin not found in PATH."
+	@echo "[BOOTSTRAP] Installing merlin..."
+	@$(ROOT_DIR)/merlin.sh
 
 .PHONY: all
 all: $(MERLIN)
