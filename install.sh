@@ -22,10 +22,19 @@ ARCH=$(uname -m)
 if [ "$ARCH" = "x86_64" ]; then ARCH="amd64"; fi
 if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then ARCH="arm64"; fi
 
-echo -e "\033[1;36m[DOWNLOAD] Fetching system-specific binary for Camelot ($OS-$ARCH)...\033[0m"
-URL="https://github.com/yutila-org/camelot/releases/download/alpha/camelot-${OS}-${ARCH}"
+TAG=$(curl -s "https://api.github.com/repos/yutila-org/camelot/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+if [ -z "$TAG" ]; then
+    TAG=$(curl -s "https://api.github.com/repos/yutila-org/camelot/releases" | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+fi
+if [ -z "$TAG" ]; then
+    echo -e "\033[1;31m[ERROR] Could not determine the latest Camelot release.\033[0m"
+    exit 1
+fi
+
+echo -e "\033[1;36m[DOWNLOAD] Fetching system-specific binary for Camelot ($OS-$ARCH) from release $TAG...\033[0m"
+URL="https://github.com/yutila-org/camelot/releases/download/$TAG/camelot-${OS}-${ARCH}"
 if [[ "$OS" == *"mingw"* || "$OS" == *"msys"* || "$OS" == *"cygwin"* ]]; then
-    URL="https://github.com/yutila-org/camelot/releases/download/alpha/camelot-windows-amd64.exe"
+    URL="https://github.com/yutila-org/camelot/releases/download/$TAG/camelot-windows-amd64.exe"
     curl -sSL "$URL" -o "$CAMELOT_HOME/bin/camelot.exe"
     chmod +x "$CAMELOT_HOME/bin/camelot.exe"
 else
@@ -46,7 +55,7 @@ fi
 
 if ! command -v merlin &> /dev/null; then
     echo -e "\033[1;33m[NOTICE] Merlin build engine not found. Installing it now...\033[0m"
-    curl -sSL https://github.com/yutila-org/merlin/releases/download/alpha/install.sh | bash
+    curl -sSL https://raw.githubusercontent.com/yutila-org/merlin/main/install.sh | bash
 fi
 
 echo -e "\033[1;32m[SUCCESS] Camelot Framework installed to $CAMELOT_HOME!\033[0m"
