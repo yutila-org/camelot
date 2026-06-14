@@ -12,11 +12,14 @@
 SHELL := /bin/bash
 export CC ?= clang
 
-# Resolve merlin dynamically (Check PATH, fallback to adjacent repo)
+# Resolve merlin dynamically (Check PATH, fallback to adjacent repo, fallback to global install)
 ifeq (, $(shell command -v merlin 2>nul || where merlin 2>nul))
-    # Gets the directory where THIS Makefile lives, then goes up one level to look for merlin
     ROOT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-    MERLIN := $(ROOT_DIR)../merlin/bin/merlin$(if $(OS),.exe,)
+    ifneq (, $(wildcard $(ROOT_DIR)../merlin))
+        MERLIN := $(ROOT_DIR)../merlin/bin/merlin$(if $(OS),.exe,)
+    else
+        MERLIN := $(HOME)/.merlin/bin/merlin$(if $(OS),.exe,)
+    endif
 else
     MERLIN := merlin
 endif
@@ -25,8 +28,13 @@ endif
 default: all
 
 $(MERLIN):
-	@echo "[BOOTSTRAP] Merlin not found in PATH. Building from adjacent repository (../merlin)..."
-	@$(MAKE) -C $(ROOT_DIR)../merlin
+	@if [ "$(MERLIN)" = "$(ROOT_DIR)../merlin/bin/merlin$(if $(OS),.exe,)" ]; then \
+		echo "[BOOTSTRAP] Merlin not found in PATH. Building from adjacent repository (../merlin)..."; \
+		$(MAKE) -C $(ROOT_DIR)../merlin; \
+	else \
+		echo "[BOOTSTRAP] Merlin not found. Installing globally via script..."; \
+		curl -sSL https://github.com/yutila-org/merlin/releases/download/alpha/install.sh | bash; \
+	fi
 
 .PHONY: all
 all: $(MERLIN)

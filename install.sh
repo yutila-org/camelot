@@ -46,7 +46,7 @@ fi
 
 if ! command -v merlin &> /dev/null; then
     echo -e "\033[1;33m[NOTICE] Merlin build engine not found. Installing it now...\033[0m"
-    curl -sSL https://github.com/yutila-org/merlin/releases/latest/download/install.sh | bash
+    curl -sSL https://github.com/yutila-org/merlin/releases/download/alpha/install.sh | bash
 fi
 
 echo -e "\033[1;32m[SUCCESS] Camelot Framework installed to $CAMELOT_HOME!\033[0m"
