@@ -51,8 +51,32 @@ Camelot is split into modular domains mapping `include/camelot/` to `src/`.
 *   **All Builds**: ASLR (`-fPIE`, `-pie`), non-executable stack, stack protection and fortified source.
 *   **Release**: Force two's complement integer wrap (`-fwrapv`), disable optimizations assuming non-null pointers (`-fno-delete-null-pointer-checks`) and disable strict overflow optimizations (`-fno-strict-overflow`).
 
-## <img src="https://cdn.simpleicons.org/github/888888" width="24" style="vertical-align: bottom;" /> Integration
-Download the latest source release, compile the static library via **Merlin** and link it to your project.
+## <img src="https://cdn.simpleicons.org/gnometerminal/60FF60" width="24" style="vertical-align: bottom;" /> Installation
+The quickest way to get Camelot is via our automated install scripts. By default, they will pull the latest release.
+
+**Linux & macOS:**
+```bash
+curl -sSL https://github.com/yutila-org/camelot/releases/latest/download/install.sh | bash
+```
+
+**Windows (PowerShell):**
+```powershell
+iwr https://github.com/yutila-org/camelot/releases/latest/download/install.ps1 -useb | iex
+```
+
+### Installing a Specific Version
+To install a specific version, pass the tag as an argument (replace `VERSION_NAME` with the exact version name you want):
+
+**Linux & macOS:**
+```bash
+curl -sSL https://github.com/yutila-org/camelot/releases/latest/download/install.sh | bash -s -- VERSION_NAME
+```
+
+**Windows (PowerShell):**
+```powershell
+$script = Invoke-WebRequest -Uri "https://github.com/yutila-org/camelot/releases/latest/download/install.ps1" -UseBasicParsing
+Invoke-Command -ScriptBlock ([Scriptblock]::Create($script.Content)) -ArgumentList "VERSION_NAME"
+```
 
 ## <img src="https://cdn.simpleicons.org/markdown/42A5F5" width="24" style="vertical-align: bottom;" /> Limitations
 Camelot is not designed to be the savior of C. It is simply built to solve the tedious situations I personally encounter as a C developer, like wrestling with file I/O or hidden memory allocations. Because of this practical focus, it accepts inherent architectural trade-offs. For example, RAII cannot be implemented due to cross-platform compiler incompatibilities, meaning resource teardown remains entirely manual. Absolute safety is impossible without a borrow checker, so protection relies strictly on developer conventions. Finally, structural features like tracked strings or open-addressed hash maps introduce minor overhead via extra pointers and parallel metadata arrays.
